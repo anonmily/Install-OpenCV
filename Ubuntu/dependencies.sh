@@ -2,8 +2,11 @@
 
 echo "--- Removing any pre-installed ffmpeg and x264"
 apt-get -qq remove ffmpeg x264 libx264-dev
+
 echo "deb http://us.archive.ubuntu.com/ubuntu trusty main multiverse" >>  /etc/apt/sources.list
 apt-get -y update
+apt-key -y update
+
 function install_dependency {
     echo "--- Installing dependency: $1"
     apt-get -y install $1
