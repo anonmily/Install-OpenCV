@@ -16,7 +16,7 @@ fi
 if [[ -z "$dldir" ]]; then
     dldir=OpenCV
 fi
-if ! sudo true; then
+if [ "$EUID" -ne 0 ]; then
     echo "You must have root privileges to run this script."
     exit 1
 fi
@@ -44,7 +44,7 @@ mkdir build
 cd build
 cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..
 make -j 4
-sudo make install
-sudo sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
-sudo ldconfig
+make install
+sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
+ldconfig
 echo "OpenCV" $version "ready to be used"
